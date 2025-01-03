@@ -11,13 +11,8 @@ jobs:
           submodules: true
           fetch-depth: 0
       
-      - uses: actions/checkout@v3
-        with:
-          repository: Malsius/notion-md
-          path: notion-md
-      
       - name: Fetch Notion pages
-        run: notion-md/script.py --static static/images --content content/posts --url /notion-ghpages/images --db ${{ secrets.NOTION_DB_ID }} --key ${{ secrets.NOTION_API_KEY }} --hugo
+        run: python script.py --static static/images --content content/posts --url /mohamedhuzien.github.io/images --db ${{ secrets.NOTION_DB_ID }} --key ${{ secrets.NOTION_API_KEY }} --hugo
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -27,11 +22,9 @@ jobs:
 
       - name: Build
         run: hugo
-
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/deploy-pages@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./public
-          force_orphan: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./public
+          branch: master
